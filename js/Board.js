@@ -1,11 +1,18 @@
-class Board {
+export class Board {
     rows = 10;
-    cols = 10;
+    cols = 15;
 
-    constructor(rows, cols) {
+    grid;
+
+    mines = 20;
+
+    constructor(rows, cols, mines) {
         this.rows = rows;
         this.cols = cols;
+        this.mines = mines;
         this.grid = this.make2DArray(rows, cols);
+
+        this.randomizeMines();
     }
 
     make2DArray(rows, cols) {
@@ -14,5 +21,9 @@ class Board {
             arr[i] = new Array(rows);
         }
         return arr;
+    }
+
+    randomizeMines() {
+
     }
 }
