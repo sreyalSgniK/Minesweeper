@@ -130,6 +130,12 @@ export class NumberCell extends Cell {
 
 
     open() {
+        if (this.cellState == "opened" && this.number != 0 && this.number == this.countAdjacentFlags()) {
+            // console.log("hi");
+            this.chord();
+        }
+        
+
         if (this.cellState != "unopened") {
             return;
         }
@@ -146,7 +152,6 @@ export class NumberCell extends Cell {
         this.cellState = "opened";
 
         if(this.number == 0) {
-
             const directions = [
                 [-1, -1], [-1, 0], [-1, 1],
                 [0, -1],           [0, 1],
@@ -163,5 +168,47 @@ export class NumberCell extends Cell {
         if (row >= 0 && row < this.board.rows && col >= 0 && col < this.board.cols) {
             this.board.grid[row][col].open();
         }
+    }
+
+    chord() {
+    
+        const directions = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [0, -1],           [0, 1],
+            [1, -1], [1, 0], [1, 1]
+        ];
+        
+        directions.forEach(([dRow, dCol]) => {
+            var row = this.row + dRow;
+            var col = this.col + dCol;
+            if (row >= 0 && row < this.board.rows && col >= 0 && col < this.board.cols) {
+                if(this.board.grid[row][col].cellState == "unopened"){
+                    this.openCell.call(this, row, col);
+                }
+            }
+        });
+        
+    }
+
+    countAdjacentFlags() {
+        var count = 0;
+        const directions = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [0, -1],           [0, 1],
+            [1, -1], [1, 0], [1, 1]
+        ];
+
+        directions.forEach(([dRow, dCol]) => {
+            var row = this.row + dRow;
+            var col = this.col + dCol;
+            if (row >= 0 && row < this.board.rows && col >= 0 && col < this.board.cols) {
+                if(this.board.grid[row][col].cellState == "flagged"){
+                    count++;
+                }
+            }
+            
+        });
+
+        return count;
     }
 }
