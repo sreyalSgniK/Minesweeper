@@ -19,3 +19,30 @@ for(var i = 0; i < cols; i++) {
 
 
 // console.log(arr[1][1]);
+
+
+function flag(event) {
+    var row = getRowFromY(event.offsetY);
+    var col = getColFromX(event.offsetX);
+
+    var ctx = canvas.getContext("2d");
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    ctx.font = "15px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    if (board.grid[row][col].cellState == "opened") {
+        return;
+    }
+
+    if (board.grid[row][col].cellState == "flagged") {
+        board.grid[row][col].unflag();
+        ctx.clearRect(col * cellWidth + margin + lineWidth, row * cellWidth + margin + lineWidth, cellWidth - lineWidth*2, cellWidth - lineWidth*2);
+        return;
+    }
+
+    board.grid[row][col].flag();
+
+    ctx.fillText("Flag", col * cellWidth + cellWidth/2 + margin, row * cellWidth + cellWidth/2 + margin);
+}
